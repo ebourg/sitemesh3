@@ -1,6 +1,7 @@
 package org.sitemesh.webapp.contentfilter.io;
 
 import javax.servlet.ServletOutputStream;
+import javax.servlet.WriteListener;
 import java.io.IOException;
 
 /**
@@ -138,4 +139,12 @@ public class RoutableServletOutputStream extends ServletOutputStream {
         getDestination().flush();
     }
 
+    @Override
+    public boolean isReady() {
+        return destination.isReady();
+    }
+
+    @Override
+    public void setWriteListener(WriteListener writeListener) {
+    }
 }
