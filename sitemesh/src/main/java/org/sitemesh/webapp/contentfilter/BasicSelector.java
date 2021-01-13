@@ -1,5 +1,6 @@
 package org.sitemesh.webapp.contentfilter;
 
+import javax.servlet.DispatcherType;
 import javax.servlet.http.HttpServletRequest;
 
 import org.sitemesh.config.PathMapper;
@@ -61,6 +62,15 @@ public class BasicSelector implements Selector {
     }
 
     protected boolean filterAlreadyAppliedForRequest(HttpServletRequest request) {
+        if (request.getDispatcherType().equals(DispatcherType.ERROR)) {
+            if (Boolean.TRUE.equals(request.getAttribute(ALREADY_APPLIED_KEY + ".ERROR"))) {
+                return true;
+            } else {
+                request.setAttribute(ALREADY_APPLIED_KEY + ".ERROR", true);
+                return false;
+            }
+        }
+
         // Prior to Servlet 2.4 spec, it was unspecified whether the filter
         // should be called again upon an include().
         if (Boolean.TRUE.equals(request.getAttribute(ALREADY_APPLIED_KEY))) {
